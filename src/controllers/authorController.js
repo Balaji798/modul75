@@ -30,7 +30,7 @@ const login = async function (req, res) {
         let credentials = req.body;
         let validCredentials = await AuthorModel.findOne(credentials);
         if (!validCredentials) {
-            return res.status(200).send({ status: false, msg: "Invalid email or Password " });
+            return res.status(400).send({ status: false, msg: "Invalid email or Password " });
         } else {
             let payload = { _id: validCredentials._id };
             let validToken = jwt.sign(payload, "mySecretKey");

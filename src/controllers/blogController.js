@@ -206,7 +206,7 @@ const deleteBlogById = async function (req, res) {
         const id = req.params.blogid
         const tokenAutherId = req["x-api-key"]['_id']
         let blogData = await BlogModel.findOne({ _id: id })
-        let authorId = blogData.authorId
+        
         if (blogData) {
             if (blogData.authorId == tokenAutherId) {
                 if (blogData.isDeleted == false) {
@@ -214,7 +214,7 @@ const deleteBlogById = async function (req, res) {
                     return res.status(200).send({ status: true, Message: "blog Deleted" })
                 }
                 else {
-                    return res.status(404).send({ Message: "Blog document not exist" })
+                    return res.status(404).send({ Message: " document not exist" })
                 }
             } else {
                 return res.status(403).send({ staus: false, msg: "Not Authorised, Please login from request account" })
