@@ -53,7 +53,7 @@ const creatWriter = async function (req, res) {
     res.status(400).send({status: false, message: `Email is required`});
     return;
 }
-if(!(password.length>=8 && password.length<=15)) {
+if(!(/^[a-zA-Z0-9!@#$%^&*]{8,16}$/.test(password))) {                                                                       //!((password.split(" ").join("")).length>=8 && (password.split(" ").join("")).length<=15)
   res.status(400).send({status: false, message: `invalid Password `});
   return;
 }

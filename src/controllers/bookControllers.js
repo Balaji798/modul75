@@ -113,13 +113,21 @@ const getBooks=async function (req, res){
       }
 
       const allBooks = await bookModal.find(filterQuery)
-        
+      allBooks.sort(function (a, b) {
+
+        if (a.title.toLowerCase() < b.title.toLowerCase()) return -1;
+
+        if (a.title.toLowerCase() > b.title.toLowerCase()) return 1;
+
+        return 0;
+
+    })
       if(Array.isArray(allBooks) && allBooks.length===0) {
-          res.status(404).send({status: false, message: 'No blogs found'})
+          res.status(404).send({status: false, message: 'No book found'})
           return
       }
 
-      res.status(200).send({status: true, message: 'Blogs list', data: allBooks})
+      res.status(200).send({status: true, message: 'Book list', data: allBooks})
   }catch (error) {
      res.status(500).send({ status: false, message: error.message });
    }
@@ -133,10 +141,10 @@ const getBooksById = async function (req, res){
   }
   
   let blog = await bookModal.findOne({_id: param})
-  let {title,excerpt,userId,category,subcategory,deleted,reviews,deletedAt,releasedAt,createdAt,updatedAt}=blog
+  let {title,bookCover,excerpt,userId,category,subcategory,deleted,reviews,deletedAt,releasedAt,createdAt,updatedAt}=blog
   let reviewsData = await reviewModal.find({ bookId: blog }).select({ createdAt: 0, updatedAt: 0, __v: 0 });
-  const book ={title,excerpt,userId,category,subcategory,deleted,reviews,deletedAt,releasedAt,createdAt,updatedAt,reviewsData}
-  data["reviews"]=data["reviewsData"].length
+  const book ={title,bookCover,excerpt,userId,category,subcategory,deleted,reviews,deletedAt,releasedAt,createdAt,updatedAt,reviewsData}
+  book["reviews"]=book["reviewsData"].length
    res.status(200).send({staus:true,data:book})
   }catch (error) {
      res.status(500).send({ status: false, message: error.message });
@@ -168,7 +176,7 @@ const updateBook = async function(req,res){
           return res.status(400).send({messege:"Please Provide The Valid Excerpt"})
       }}
       if(ISBN){
-      if(!isValid(ISBN)){
+      if(!isValid(ISBN)&&(ISBN.length==0)){
           return res.status(400).send({messege:"Please Provide The Valid ISBN"})
       }
       const SameISBN = await bookModal.findOne({ ISBN: ISBN.trim() });

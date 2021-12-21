@@ -5,7 +5,7 @@ const writerSchema = new mongoose.Schema({
      title: {type:String,required:true, enum:['Mr', 'Mrs','Miss'],trim:true},
      name: {type:String,required:true,trim:true},
      phone: {
-          type:Number,
+          type:String,
              unique:true,
              require:"mobile number is required",
              trim:true,

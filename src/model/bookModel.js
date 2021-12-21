@@ -4,6 +4,8 @@ const bookSchema = new mongoose.Schema({
 
     title:{ type:String, require:true, unique:true,trim:true},
 
+    bookCover:{type:String,require:true,unique:true,trim:true},
+
     excerpt:{ type:String, require:true,trim:true},
 
     userId:{type: mongoose.Schema.Types.ObjectId, ref: 'writerDB',require:true,trim:true},
